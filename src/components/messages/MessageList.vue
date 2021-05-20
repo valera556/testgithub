@@ -1,0 +1,67 @@
+<template>
+    <div style="position: relative; width: 300px;">
+        <message-form :messages="messages" :messageAttr="message" />
+        <message-row v-for="message in messages"
+                     :key="message.id"
+                     :message="message"
+                     :editMessage="editMessage"
+                     :deleteMessage="deleteMessage"
+                     :messages="messages" />
+    </div>
+</template>
+
+<script>
+    // import axios from "axios"
+    // const axios = require('axios').default
+    import MessageRow from './MessageRow.vue'
+    import MessageForm from './MessageForm.vue'
+
+    export default {
+        props: ['messages'],
+        components: {
+            MessageRow,
+            MessageForm
+        },
+        data() {
+            return {
+                message: null
+            }
+        },
+        methods: {
+            editMessage(message) {
+                this.message = message
+            },
+            deleteMessage(message) {
+                let url = process.env.VUE_APP_API_ENDPOINT + `/message/${message.id}`
+/*
+                this.$resource('/message{/id}').remove({id: message.id})
+                    .then(result => {
+                    if (result.ok) {
+                        this.messages.splice(this.messages.indexOf(message), 1)
+                    }
+                })
+*/
+/*
+                axios.delete(url, {id: message.id})
+                    .then(result => {
+                        this.messages.splice(this.messages.indexOf(message), 1)
+                    })
+*/
+/*
+                axios.delete(url)
+                    .then(result => {
+                        this.messages.splice(this.messages.indexOf(message), 1)
+                    })
+*/
+                this.$http.delete(url)
+                    .then(result => {
+                        this.messages.splice(this.messages.indexOf(message), 1)
+                    })
+            }
+        }
+    }
+</script>
+
+<style>
+
+</style>
